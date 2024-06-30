@@ -10,7 +10,6 @@ import java.util.Properties;
 public class Parameter {
     private final Properties prop;
     private static final Logger logger = LogManager.getLogger(Parameter.class);
-
     public Parameter(String nomFichier) {
         prop = new Properties();
 
