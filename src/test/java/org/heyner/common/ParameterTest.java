@@ -20,6 +20,11 @@ class ParameterTest {
         tempString = parameter.getProperty("Parameter2");
         assertNull(tempString);
     }
+    @Test
+    void testGetVersion() {
+        String tempString= parameter.getVersion();
+        assertEquals("version",tempString);
+    }
     @Test()
     void testGetNomFichierBase2() {
         assertDoesNotThrow(()->new Parameter("config2properties"));

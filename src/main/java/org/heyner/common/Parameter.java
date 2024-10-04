@@ -21,4 +21,5 @@ public class Parameter {
     }
 
     public String getProperty(String nomProperty) {return prop.getProperty(nomProperty);}
+    public String getVersion() {return prop.getProperty("version");}
 }
