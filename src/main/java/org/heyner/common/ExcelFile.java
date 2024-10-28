@@ -55,6 +55,12 @@ public class ExcelFile {
         CellReference cellReference=new CellReference(address);
         return dataSheet.getRow(cellReference.getRow()).getCell(cellReference.getCol());
     }
+    public Cell getCell(String sheet, int rowNum, int colNum) {
+        Sheet dataSheet = workbook.getSheet(sheet);
+        return dataSheet.getRow(rowNum).getCell(colNum, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+    }
+
+
     public String getCellValue(String sheet, String address) {
         Sheet dataSheet = workbook.getSheet(sheet);
         CellReference cellReference = new CellReference(address);

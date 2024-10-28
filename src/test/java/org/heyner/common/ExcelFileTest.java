@@ -24,6 +24,7 @@ class ExcelFileTest {
         assertEquals("15", fichierExcel.getCellValue("Feuil1", "A1"));
         assertEquals("20", fichierExcel.getCellValue("Feuil1", "D5"));
         assertEquals(10,fichierExcel.getCell("Feuil1","D1").getNumericCellValue());
+        assertEquals(20,fichierExcel.getCell("Feuil1",1,3).getNumericCellValue());
     }
 
     @Test
