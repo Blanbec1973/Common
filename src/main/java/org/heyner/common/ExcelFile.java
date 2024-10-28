@@ -50,7 +50,11 @@ public class ExcelFile {
         logger.info("Saving OK for {}",this.name);
 
     }
-
+    public Cell getCell(String sheet, String address) {
+        Sheet dataSheet = workbook.getSheet(sheet);
+        CellReference cellReference=new CellReference(address);
+        return dataSheet.getRow(cellReference.getRow()).getCell(cellReference.getCol());
+    }
     public String getCellValue(String sheet, String address) {
         Sheet dataSheet = workbook.getSheet(sheet);
         CellReference cellReference = new CellReference(address);

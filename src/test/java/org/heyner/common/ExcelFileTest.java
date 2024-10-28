@@ -23,6 +23,7 @@ class ExcelFileTest {
         ExcelFile fichierExcel = new ExcelFile(fileName1);
         assertEquals("15", fichierExcel.getCellValue("Feuil1", "A1"));
         assertEquals("20", fichierExcel.getCellValue("Feuil1", "D5"));
+        assertEquals(10,fichierExcel.getCell("Feuil1","D1").getNumericCellValue());
     }
 
     @Test
