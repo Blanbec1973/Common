@@ -1,6 +1,5 @@
 package org.heyner.common;
 
-import org.heyner.common.Parameter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
