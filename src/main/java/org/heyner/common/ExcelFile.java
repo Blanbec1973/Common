@@ -15,7 +15,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class ExcelFile {
+public class ExcelFile implements AutoCloseable {
     private static final Logger logger = LogManager.getLogger(ExcelFile.class);
     private final Workbook workbook;
     private final String name;
@@ -166,10 +166,10 @@ public class ExcelFile {
     private void copyCell(Cell sourceCell, Cell destCell) {
         CellType cellType = sourceCell.getCellType();
 
-        if (cellType == CellType.NUMERIC) {
-            destCell.setCellValue(sourceCell.getNumericCellValue());
-        } else {
-            destCell.setCellValue(sourceCell.getStringCellValue());
+        switch (cellType)  {
+            case NUMERIC -> destCell.setCellValue(sourceCell.getNumericCellValue());
+            case FORMULA -> destCell.setCellFormula(sourceCell.getCellFormula());
+            default -> destCell.setCellValue(sourceCell.getStringCellValue());
         }
     }
 }
