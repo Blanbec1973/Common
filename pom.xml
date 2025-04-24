@@ -6,7 +6,7 @@
 
     <groupId>org.heyner</groupId>
     <artifactId>common</artifactId>
-    <version>2.5</version>
+    <version>3.0</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
