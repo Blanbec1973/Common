@@ -31,6 +31,7 @@ class DirectoryParserTest {
         DirectoryParser parser = new DirectoryParser(TEST_DIRECTORY_BASE + "empty_directory", ".*\\.txt");
         List<Path> files = parser.getMatchingFiles();
         assertEquals(0, files.size());
+        assertTrue(parser.isEmpty());
     }
 
     @Test

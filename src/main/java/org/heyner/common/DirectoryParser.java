@@ -27,5 +27,7 @@ public class DirectoryParser {
         return matchingFiles;
     }
 
+    public boolean isEmpty() { return matchingFiles.isEmpty();}
+
 }
 
