@@ -1,13 +1,14 @@
 package org.heyner.common;
 
 import java.io.File;
+import java.nio.file.Path;
 
 public class FileUtils {
 
     private FileUtils() {}
 
-    public static String addSuffixToFileName(String filePath, String suffix) {
-        File file = new File(filePath);
+    public static String addSuffixToFileName(Path filePath, String suffix) {
+        File file = filePath.toFile();
         String fileName = file.getName();
         int dotIndex = fileName.lastIndexOf('.');
  
