@@ -2,14 +2,14 @@ package org.heyner.common;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.heyner.common.exceptions.ExcelWriteException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ExcelFileTest {
@@ -39,14 +39,14 @@ class ExcelFileTest {
     @Test
     void testDeleteLine() {
         try (ExcelFile fichierExcel = new ExcelFile(fileName2)) {
-            fichierExcel.deleteFirstLineContaining("sheet1", "AR Historic by client");
+            fichierExcel.deleteFirstLineContaining(ExcelConstants.DEFAULT_SHEET, ExcelConstants.AR_HISTORIC_HEADER);
             fichierExcel.writeFichierExcel();
         } catch (IOException ex) {
             fail(ex.getMessage());
         }
 
         try (ExcelFile fichierExcel1 = new ExcelFile(fileName2)) {
-            assertEquals("From Date", fichierExcel1.getCellValue("sheet1", 0, 0));
+            assertEquals("From Date", fichierExcel1.getCellValue(ExcelConstants.DEFAULT_SHEET, 0, 0));
         } catch (IOException ex) {
             fail(ex.getMessage());
         }
@@ -125,7 +125,11 @@ class ExcelFileTest {
         }catch (IOException ex) {
             fail(ex.getMessage());
         }
-
-
     }
+    @Test
+    void shouldThrowExcelWriteExceptionOnInvalidPath() throws IOException {
+        ExcelFile file = new ExcelFile("///invalid/path.xlsx");
+        assertThrows(ExcelWriteException.class, file::writeFichierExcel);
+    }
+
 }

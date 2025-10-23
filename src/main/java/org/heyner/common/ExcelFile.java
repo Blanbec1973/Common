@@ -9,6 +9,7 @@ import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 import org.apache.poi.xssf.usermodel.XSSFRangeCopier;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.heyner.common.exceptions.ExcelWriteException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,8 +45,8 @@ public class ExcelFile implements AutoCloseable {
         try(FileOutputStream outputStream = new FileOutputStream(this.name)) {
             workbook.write(outputStream);
         } catch (IOException e) {
-            logger.error(e.getMessage());
-            System.exit(-1);
+            logger.error("Error saving Excel file: {}", this.name, e);
+            throw new ExcelWriteException("Unable to write Excel file: " + this.name, e);
         }
         logger.info("Saving OK for {}",this.name);
 
