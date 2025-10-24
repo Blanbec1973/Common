@@ -1,4 +1,4 @@
-package org.heyner.common;
+package org.heyner.common.excelfile;
 
 public final class ExcelConstants {
 

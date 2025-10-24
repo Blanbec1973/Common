@@ -1,8 +1,11 @@
-package org.heyner.common;
+package org.heyner.common.excelfile;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.heyner.common.TestInitializerFactory;
 import org.heyner.common.exceptions.ExcelWriteException;
+import org.heyner.common.excelfile.ExcelFile;
+import org.heyner.common.excelfile.ExcelConstants;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -25,7 +28,7 @@ class ExcelFileTest {
 
     @Test
     void testGetCellValue() {
-        try(ExcelFile fichierExcel = new ExcelFile(fileName1)) {
+        try(ExcelFile fichierExcel = ExcelFile.open(fileName1)) {
             assertEquals("15", fichierExcel.getCellValue("Feuil1", "A1"));
             assertEquals("20", fichierExcel.getCellValue("Feuil1", "D5"));
             assertEquals(10,fichierExcel.getCell("Feuil1","D1").getNumericCellValue());
@@ -38,14 +41,14 @@ class ExcelFileTest {
 
     @Test
     void testDeleteLine() {
-        try (ExcelFile fichierExcel = new ExcelFile(fileName2)) {
+        try (ExcelFile fichierExcel = ExcelFile.open(fileName2)) {
             fichierExcel.deleteFirstLineContaining(ExcelConstants.DEFAULT_SHEET, ExcelConstants.AR_HISTORIC_HEADER);
             fichierExcel.writeFichierExcel();
         } catch (IOException ex) {
             fail(ex.getMessage());
         }
 
-        try (ExcelFile fichierExcel1 = new ExcelFile(fileName2)) {
+        try (ExcelFile fichierExcel1 = ExcelFile.open(fileName2)) {
             assertEquals("From Date", fichierExcel1.getCellValue(ExcelConstants.DEFAULT_SHEET, 0, 0));
         } catch (IOException ex) {
             fail(ex.getMessage());
@@ -54,7 +57,7 @@ class ExcelFileTest {
 
     @Test
     void notDeleteLine() {
-        try (ExcelFile excelFile=new ExcelFile(notDeleteFileName)) {
+        try (ExcelFile excelFile=ExcelFile.open(notDeleteFileName)) {
             Sheet sheet = excelFile.createSheet("TestSheet");
             Row row = sheet.createRow(0);
             row.createCell(0).setCellValue("toto");
@@ -67,7 +70,7 @@ class ExcelFileTest {
             fail(ex.getMessage());
         }
 
-        try (ExcelFile excelFile2 = new ExcelFile(notDeleteFileName)){
+        try (ExcelFile excelFile2 = ExcelFile.open(notDeleteFileName)){
             Sheet sheet = excelFile2.getWorkBook().getSheet("TestSheet");
 
             assertEquals("toto",sheet.getRow(0).getCell(0).getStringCellValue());
@@ -81,7 +84,7 @@ class ExcelFileTest {
     }
     @Test
     void testRowCount() {
-        try (ExcelFile fichierExcel = new ExcelFile(fileName1))
+        try (ExcelFile fichierExcel = ExcelFile.open(fileName1))
         {
             assertEquals(5, fichierExcel.rowCount("Feuil1", 3));
         } catch (IOException ex) {
@@ -91,7 +94,7 @@ class ExcelFileTest {
 
     @Test
     void testNewFile() {
-        try (ExcelFile excelFile=new ExcelFile(newFileName)) {
+        try (ExcelFile excelFile=ExcelFile.create(newFileName)) {
             Sheet sheet = excelFile.createSheet("TestSheet");
             Row row = sheet.createRow(0);
             row.createCell(0).setCellValue(1);
@@ -108,7 +111,7 @@ class ExcelFileTest {
             fail(ex.getMessage());
         }
 
-        try (ExcelFile excelFile2 = new ExcelFile(newFileName)){
+        try (ExcelFile excelFile2 = ExcelFile.open(newFileName)){
             Sheet sheet = excelFile2.getWorkBook().getSheet("TestSheet");
             Sheet sheet2 = excelFile2.getWorkBook().getSheet("TestSheet2");
 
@@ -128,7 +131,7 @@ class ExcelFileTest {
     }
     @Test
     void shouldThrowExcelWriteExceptionOnInvalidPath() throws IOException {
-        ExcelFile file = new ExcelFile("///invalid/path.xlsx");
+        ExcelFile file = ExcelFile.open("///invalid/path.xlsx");
         assertThrows(ExcelWriteException.class, file::writeFichierExcel);
     }
 
