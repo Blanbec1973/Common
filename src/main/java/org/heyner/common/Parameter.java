@@ -1,5 +1,6 @@
 package org.heyner.common;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,7 +21,7 @@ public class Parameter {
             prop.load(input);
             loaded = true;
         } catch (IOException e) {
-            logger.warn("Fichier externe non trouvé ou illisible : " + nomFichier);
+            logger.warn("Fichier externe non trouvé ou illisible : {}", nomFichier);
         }
 
         // 2. Fallback : charger depuis le classpath (dans le JAR)
@@ -29,7 +30,7 @@ public class Parameter {
                 if (input != null) {
                     prop.load(input);
                 } else {
-                    logger.error("Impossible de charger le fichier de propriétés : " + nomFichier);
+                    logger.log(Level.ERROR, "Impossible de charger le fichier de propriétés : {}", nomFichier);
                 }
             } catch (IOException e) {
                 logger.error(e.getMessage());
