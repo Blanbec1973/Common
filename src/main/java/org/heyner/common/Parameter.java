@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.FileInputStream;
 import java.util.Properties;
 
 /**
@@ -21,8 +22,10 @@ public class Parameter {
 
     /**
      * Constructeur qui charge les propriétés depuis un fichier de configuration.
+     * Implémente une logique de fallback : essaie d'abord de charger comme fichier externe,
+     * puis depuis le classpath si le fichier externe n'est pas trouvé.
      *
-     * @param nomFichier Le nom du fichier de configuration (doit être dans le classpath)
+     * @param nomFichier Le nom/chemin du fichier de configuration
      * @throws IllegalArgumentException si le nom du fichier est null ou vide
      */
     public Parameter(String nomFichier) {
@@ -31,16 +34,29 @@ public class Parameter {
         }
 
         prop = new Properties();
+        boolean loaded = false;
 
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream(nomFichier)) {
-            if (input == null) {
-                logger.error("Fichier de configuration '{}' introuvable dans le classpath", nomFichier);
-                return;
-            }
+        // 1. Essayer de charger comme fichier externe (chemin absolu ou relatif)
+        try (FileInputStream input = new FileInputStream(nomFichier)) {
             prop.load(input);
-            logger.info("Configuration chargée avec succès depuis '{}'", nomFichier);
+            loaded = true;
+            logger.info("Configuration chargée avec succès depuis le fichier externe '{}'", nomFichier);
         } catch (IOException e) {
-            logger.error("Erreur lors du chargement de la configuration '{}': {}", nomFichier, e.getMessage(), e);
+            logger.warn("Fichier externe non trouvé ou illisible : {}", nomFichier);
+        }
+
+        // 2. Fallback : charger depuis le classpath (dans le JAR)
+        if (!loaded) {
+            try (InputStream input = getClass().getClassLoader().getResourceAsStream(nomFichier)) {
+                if (input != null) {
+                    prop.load(input);
+                    logger.info("Configuration chargée avec succès depuis le classpath '{}'", nomFichier);
+                } else {
+                    logger.error("Impossible de charger le fichier de propriétés '{}' (ni externe ni dans le classpath)", nomFichier);
+                }
+            } catch (IOException e) {
+                logger.error("Erreur lors du chargement de la configuration depuis le classpath '{}': {}", nomFichier, e.getMessage(), e);
+            }
         }
     }
 

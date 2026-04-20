@@ -28,4 +28,17 @@ class ParameterTest {
     void testGetNomFichierBase2() {
         assertDoesNotThrow(()->new Parameter("config2properties"));
     }
+
+    @Test
+    void testFallbackLogic() {
+        // Test que la logique de fallback fonctionne :
+        // - D'abord essayer comme fichier externe
+        // - Puis fallback vers le classpath
+
+        // Ce test utilise le fichier config.properties qui existe dans src/test/resources
+        // et devrait être chargé depuis le classpath
+        Parameter param = new Parameter("config.properties");
+        assertNotNull(param.getProperty("url"));
+        assertEquals("testURL", param.getProperty("url"));
+    }
 }
