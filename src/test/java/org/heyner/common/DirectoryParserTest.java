@@ -42,4 +42,39 @@ class DirectoryParserTest {
         assertTrue(files.stream().anyMatch(file -> file.getFileName().toString().equals("file1.txt")));
         assertTrue(files.stream().anyMatch(file -> file.getFileName().toString().equals("file2.txt")));
     }
+
+    @Test
+    void testConstructorWithNullDirectoryPath() {
+        assertThrows(IllegalArgumentException.class, () -> new DirectoryParser(null, ".*\\.txt"));
+    }
+
+    @Test
+    void testConstructorWithEmptyDirectoryPath() {
+        assertThrows(IllegalArgumentException.class, () -> new DirectoryParser("", ".*\\.txt"));
+    }
+
+    @Test
+    void testConstructorWithBlankDirectoryPath() {
+        assertThrows(IllegalArgumentException.class, () -> new DirectoryParser("   ", ".*\\.txt"));
+    }
+
+    @Test
+    void testConstructorWithNullRegex() {
+        assertThrows(IllegalArgumentException.class, () -> new DirectoryParser(TEST_DIRECTORY_BASE + "test_directory", null));
+    }
+
+    @Test
+    void testConstructorWithEmptyRegex() {
+        assertThrows(IllegalArgumentException.class, () -> new DirectoryParser(TEST_DIRECTORY_BASE + "test_directory", ""));
+    }
+
+    @Test
+    void testConstructorWithBlankRegex() {
+        assertThrows(IllegalArgumentException.class, () -> new DirectoryParser(TEST_DIRECTORY_BASE + "test_directory", "   "));
+    }
+
+    @Test
+    void testConstructorWithInvalidDirectory() {
+        assertThrows(IllegalArgumentException.class, () -> new DirectoryParser("nonexistent_directory", ".*\\.txt"));
+    }
 }

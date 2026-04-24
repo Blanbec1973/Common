@@ -41,4 +41,37 @@ class ParameterTest {
         assertNotNull(param.getProperty("url"));
         assertEquals("testURL", param.getProperty("url"));
     }
+
+    @Test
+    void testConstructorWithNullFileName() {
+        assertThrows(IllegalArgumentException.class, () -> new Parameter(null));
+    }
+
+    @Test
+    void testConstructorWithEmptyFileName() {
+        assertThrows(IllegalArgumentException.class, () -> new Parameter(""));
+    }
+
+    @Test
+    void testConstructorWithBlankFileName() {
+        assertThrows(IllegalArgumentException.class, () -> new Parameter("   "));
+    }
+
+    @Test
+    void testGetPropertyWithNull() {
+        String result = parameter.getProperty(null);
+        assertNull(result);
+    }
+
+    @Test
+    void testGetPropertyWithEmpty() {
+        String result = parameter.getProperty("");
+        assertNull(result);
+    }
+
+    @Test
+    void testGetPropertyWithBlank() {
+        String result = parameter.getProperty("   ");
+        assertNull(result);
+    }
 }

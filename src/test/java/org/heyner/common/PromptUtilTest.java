@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -46,5 +47,20 @@ class PromptUtilTest {
 
         // Assert
         assertFalse(result);
+    }
+
+    @Test
+    void testGetYesOrNoResponseWithNullMessage() {
+        assertThrows(IllegalArgumentException.class, () -> PromptUtil.getYesOrNoResponse(null));
+    }
+
+    @Test
+    void testGetYesOrNoResponseWithEmptyMessage() {
+        assertThrows(IllegalArgumentException.class, () -> PromptUtil.getYesOrNoResponse(""));
+    }
+
+    @Test
+    void testGetYesOrNoResponseWithBlankMessage() {
+        assertThrows(IllegalArgumentException.class, () -> PromptUtil.getYesOrNoResponse("   "));
     }
 }

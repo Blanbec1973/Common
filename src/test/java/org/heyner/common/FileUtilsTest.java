@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class FileUtilsTest {
 
@@ -47,5 +48,28 @@ class FileUtilsTest {
 
         // Assert
         assertEquals(expectedPathWithoutExtension,resultWithoutExtension);
+    }
+
+    @Test
+    void addSuffixTestWithNullPath() {
+        assertThrows(IllegalArgumentException.class, () -> FileUtils.addSuffixToFileName(null, "suffix"));
+    }
+
+    @Test
+    void addSuffixTestWithNullSuffix() {
+        Path inputPath = Paths.get("./Mon dossier/Mon fichier.xlsx");
+        assertThrows(IllegalArgumentException.class, () -> FileUtils.addSuffixToFileName(inputPath, null));
+    }
+
+    @Test
+    void addSuffixTestWithEmptySuffix() {
+        Path inputPath = Paths.get("./Mon dossier/Mon fichier.xlsx");
+        assertThrows(IllegalArgumentException.class, () -> FileUtils.addSuffixToFileName(inputPath, ""));
+    }
+
+    @Test
+    void addSuffixTestWithBlankSuffix() {
+        Path inputPath = Paths.get("./Mon dossier/Mon fichier.xlsx");
+        assertThrows(IllegalArgumentException.class, () -> FileUtils.addSuffixToFileName(inputPath, "   "));
     }
 }

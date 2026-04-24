@@ -133,4 +133,320 @@ class ExcelFileTest {
         assertThrows(ExcelWriteException.class, file::writeFichierExcel);
     }
 
+    @Test
+    void testOpenWithNullPath() {
+        assertThrows(IllegalArgumentException.class, () -> ExcelFile.open(null));
+    }
+
+    @Test
+    void testOpenWithEmptyPath() {
+        assertThrows(IllegalArgumentException.class, () -> ExcelFile.open(""));
+    }
+
+    @Test
+    void testCreateWithNullPath() {
+        assertThrows(IllegalArgumentException.class, () -> ExcelFile.create(null));
+    }
+
+    @Test
+    void testCreateWithEmptyPath() {
+        assertThrows(IllegalArgumentException.class, () -> ExcelFile.create(""));
+    }
+
+    @Test
+    void testGetCellWithNullSheet() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1)) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.getCell(null, "A1"));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testGetCellWithEmptySheet() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1)) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.getCell("", "A1"));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testGetCellWithNullAddress() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1)) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.getCell("Feuil1", null));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testGetCellWithEmptyAddress() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1)) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.getCell("Feuil1", ""));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testGetCellWithNegativeRow() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1)) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.getCell("Feuil1", -1, 0));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testGetCellWithNegativeCol() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1)) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.getCell("Feuil1", 0, -1));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testGetCellValueWithNullSheet() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1)) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.getCellValue(null, "A1"));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testGetCellValueWithEmptySheet() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1)) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.getCellValue("", "A1"));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testGetCellValueWithNullAddress() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1)) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.getCellValue("Feuil1", null));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testGetCellValueWithEmptyAddress() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1)) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.getCellValue("Feuil1", ""));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testGetCellValueWithNegativeRow() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1)) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.getCellValue("Feuil1", -1, 0));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testGetCellValueWithNegativeCol() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1)) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.getCellValue("Feuil1", 0, -1));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testEvaluateFormulaCellWithNull() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1)) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.evaluateFormulaCell(null));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testDeleteFirstLineContainingWithNullSheet() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1)) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.deleteFirstLineContaining(null, "test"));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testDeleteFirstLineContainingWithEmptySheet() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1)) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.deleteFirstLineContaining("", "test"));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testDeleteFirstLineContainingWithNullString() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1)) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.deleteFirstLineContaining("Feuil1", null));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testRemoveRowWithNullSheet() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1)) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.removeRow(null, 0));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testRemoveRowWithNegativeRowIndex() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1)) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.removeRow((org.apache.poi.xssf.usermodel.XSSFSheet) excelFile.getWorkBook().getSheet("Feuil1"), -1));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testCopyRangeWithNullExcelOut() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1)) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.copyRange(null, "Feuil1", "Feuil1"));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testCopyRangeWithNullSheetIn() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1);
+             ExcelFile excelOut = ExcelFile.create("temp.xlsx")) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.copyRange(excelOut, null, "Feuil1"));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testCopyRangeWithEmptySheetIn() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1);
+             ExcelFile excelOut = ExcelFile.create("temp.xlsx")) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.copyRange(excelOut, "", "Feuil1"));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testCopyRangeWithNullSheetOut() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1);
+             ExcelFile excelOut = ExcelFile.create("temp.xlsx")) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.copyRange(excelOut, "Feuil1", null));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testCopyRangeWithEmptySheetOut() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1);
+             ExcelFile excelOut = ExcelFile.create("temp.xlsx")) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.copyRange(excelOut, "Feuil1", ""));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testCopyRangeWithoutTileRange() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1);
+             ExcelFile excelOut = ExcelFile.create("temp.xlsx")) {
+            assertThrows(IllegalStateException.class, () -> excelFile.copyRange(excelOut, "Feuil1", "Feuil1"));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testRowCountWithNullSheet() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1)) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.rowCount(null, 0));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testRowCountWithEmptySheet() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1)) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.rowCount("", 0));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testRowCountWithNegativeCol() {
+        try (ExcelFile excelFile = ExcelFile.open(fileName1)) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.rowCount("Feuil1", -1));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testCreateSheetWithNullName() {
+        try (ExcelFile excelFile = ExcelFile.create("temp.xlsx")) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.createSheet(null));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testCreateSheetWithEmptyName() {
+        try (ExcelFile excelFile = ExcelFile.create("temp.xlsx")) {
+            assertThrows(IllegalArgumentException.class, () -> excelFile.createSheet(""));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testCopySheetWithNullSheetIn() {
+        try (ExcelFile excelFile = ExcelFile.create("temp.xlsx")) {
+            Sheet sheetOut = excelFile.createSheet("Out");
+            assertThrows(IllegalArgumentException.class, () -> excelFile.copySheet(null, sheetOut, false, 0));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testCopySheetWithNullSheetOut() {
+        try (ExcelFile excelFile = ExcelFile.create("temp.xlsx")) {
+            Sheet sheetIn = excelFile.createSheet("In");
+            assertThrows(IllegalArgumentException.class, () -> excelFile.copySheet(sheetIn, null, false, 0));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testCopySheetWithNegativeOffset() {
+        try (ExcelFile excelFile = ExcelFile.create("temp.xlsx")) {
+            Sheet sheetIn = excelFile.createSheet("In");
+            Sheet sheetOut = excelFile.createSheet("Out");
+            assertThrows(IllegalArgumentException.class, () -> excelFile.copySheet(sheetIn, sheetOut, false, -1));
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
 }
