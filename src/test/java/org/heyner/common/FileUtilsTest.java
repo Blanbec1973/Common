@@ -1,6 +1,9 @@
 package org.heyner.common;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -44,8 +47,6 @@ class FileUtilsTest {
         String expectedFileNameWithoutExtension = fileNameWithoutExtension + "-" + suffix;
         String expectedPathWithoutExtension = parentPathWithoutExtension + File.separator + expectedFileNameWithoutExtension;
 
-
-
         // Assert
         assertEquals(expectedPathWithoutExtension,resultWithoutExtension);
     }
@@ -55,21 +56,20 @@ class FileUtilsTest {
         assertThrows(IllegalArgumentException.class, () -> FileUtils.addSuffixToFileName(null, "suffix"));
     }
 
-    @Test
-    void addSuffixTestWithNullSuffix() {
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(strings = {"", " "})
+    void addSuffixTestWithInvalidSuffix(String invalidSuffix) {
+
+        // Arrange
         Path inputPath = Paths.get("./Mon dossier/Mon fichier.xlsx");
-        assertThrows(IllegalArgumentException.class, () -> FileUtils.addSuffixToFileName(inputPath, null));
+
+        // Act + Assert
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> FileUtils.addSuffixToFileName(inputPath, invalidSuffix)
+        );
+
     }
 
-    @Test
-    void addSuffixTestWithEmptySuffix() {
-        Path inputPath = Paths.get("./Mon dossier/Mon fichier.xlsx");
-        assertThrows(IllegalArgumentException.class, () -> FileUtils.addSuffixToFileName(inputPath, ""));
-    }
-
-    @Test
-    void addSuffixTestWithBlankSuffix() {
-        Path inputPath = Paths.get("./Mon dossier/Mon fichier.xlsx");
-        assertThrows(IllegalArgumentException.class, () -> FileUtils.addSuffixToFileName(inputPath, "   "));
-    }
 }

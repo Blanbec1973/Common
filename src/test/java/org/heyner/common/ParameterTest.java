@@ -2,6 +2,9 @@ package org.heyner.common;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -42,36 +45,18 @@ class ParameterTest {
         assertEquals("testURL", param.getProperty("url"));
     }
 
-    @Test
-    void testConstructorWithNullFileName() {
-        assertThrows(IllegalArgumentException.class, () -> new Parameter(null));
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(strings = {"", " "})
+    void constructor_shouldRejectInvalidFileName(String invalidFileName) {
+        assertThrows(IllegalArgumentException.class, () -> new Parameter(invalidFileName));
     }
 
-    @Test
-    void testConstructorWithEmptyFileName() {
-        assertThrows(IllegalArgumentException.class, () -> new Parameter(""));
-    }
-
-    @Test
-    void testConstructorWithBlankFileName() {
-        assertThrows(IllegalArgumentException.class, () -> new Parameter("   "));
-    }
-
-    @Test
-    void testGetPropertyWithNull() {
-        String result = parameter.getProperty(null);
-        assertNull(result);
-    }
-
-    @Test
-    void testGetPropertyWithEmpty() {
-        String result = parameter.getProperty("");
-        assertNull(result);
-    }
-
-    @Test
-    void testGetPropertyWithBlank() {
-        String result = parameter.getProperty("   ");
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(strings = {"", " "})
+    void testGetPropertyWithInvalidKey(String key) {
+        String result = parameter.getProperty(key);
         assertNull(result);
     }
 }
