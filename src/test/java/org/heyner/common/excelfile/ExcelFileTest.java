@@ -309,7 +309,8 @@ class ExcelFileTest {
     @Test
     void testRemoveRowWithNegativeRowIndex() {
         try (ExcelFile excelFile = ExcelFile.open(fileName1)) {
-            assertThrows(IllegalArgumentException.class, () -> excelFile.removeRow((org.apache.poi.xssf.usermodel.XSSFSheet) excelFile.getWorkBook().getSheet("Feuil1"), -1));
+            Sheet sheet = excelFile.getWorkBook().getSheet("Feuil1");
+            assertThrows(IllegalArgumentException.class, () -> excelFile.removeRow((org.apache.poi.xssf.usermodel.XSSFSheet) sheet, -1));
         } catch (IOException e) {
             fail(e.getMessage());
         }
